@@ -100,6 +100,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         try {
             amberManager = new MainRules(this);
+
+            amberManager.setUsuario((Usuario) getIntent().getSerializableExtra("usuario"));
+            amberManager.setbLogado(getIntent().getBooleanExtra("logado", false));
+
         } catch (GenericBusinessException e) {
             e.printStackTrace();
         }
@@ -152,6 +156,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Intent itRetorno = new Intent();
+
+        itRetorno.putExtra("usuario", this.amberManager.getUsuario());
+        itRetorno.putExtra("logado", this.amberManager.isbLogado());
+
+        LoginActivity.this.setResult(RESULT_OK, itRetorno);
+        LoginActivity.this.finish();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -176,12 +191,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         public void onCompleted(JSONObject object, GraphResponse response) {
                             Log.v("LoginActivity", response.toString());
 
-                            // Application code
                             try {
 
                                 amberManager.getUsuario().setEmail(object.getString("email"));
                                 //amberManager.getUsuario().setIdade();
                                 //String birthday = object.getString("birthday"); // 01/31/1980 format
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -191,6 +206,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             parameters.putString("fields", "id,name,email,gender,birthday");
             request.setParameters(parameters);
             request.executeAsync();
+            onBackPressed();
         }
 
     }

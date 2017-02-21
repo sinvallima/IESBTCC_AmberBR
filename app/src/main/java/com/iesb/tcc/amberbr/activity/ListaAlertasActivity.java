@@ -2,6 +2,7 @@ package com.iesb.tcc.amberbr.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -34,6 +35,7 @@ import com.iesb.tcc.amberbr.activity.adapters.ListaAlertasPageAdapter;
 import com.iesb.tcc.amberbr.activity.fragments.AlertasEncerradosFragment;
 import com.iesb.tcc.amberbr.activity.fragments.AlertasRecentesFragment;
 import com.iesb.tcc.amberbr.core.ConfiguracaoDAO;
+import com.iesb.tcc.amberbr.core.MainDefaultValues;
 import com.iesb.tcc.amberbr.core.MainRules;
 import com.iesb.tcc.amberbr.entity.Alerta;
 import com.iesb.tcc.amberbr.entity.Configuracao;
@@ -235,6 +237,17 @@ public class ListaAlertasActivity extends AppCompatActivity implements AlertasEn
     public void onStart() {
         super.onStart();
 
+        //Verifica se o usuário está logado. Se não estiver desvia para a LoginActivity
+        if (!this.amberManager.isbLogado()) {
+            Intent intentLogin = new Intent(this, LoginActivity.class);
+            //intentListaJogador.putExtras("lista", this.getIntent());
+            intentLogin.putExtra("logado", this.amberManager.isbLogado());
+            intentLogin.putExtra("usuario", this.amberManager.getUsuario());
+
+            startActivityForResult(intentLogin, MainDefaultValues.REQUEST_CODE_LOGIN_ACTIVITY);
+
+        }
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
 
@@ -257,6 +270,24 @@ public class ListaAlertasActivity extends AppCompatActivity implements AlertasEn
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         //AppIndex.AppIndexApi.end(client, getIndexApiAction());
         //client.disconnect();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case MainDefaultValues.REQUEST_CODE_LOGIN_ACTIVITY:
+
+                Usuario user = (Usuario) data.getSerializableExtra("usuario");
+                boolean bLogado = (boolean) data.getBooleanExtra("logado", false);
+
+                this.amberManager.setbLogado(bLogado);
+                this.amberManager.setUsuario(user);
+
+
+        }
+
     }
 
     @Override
