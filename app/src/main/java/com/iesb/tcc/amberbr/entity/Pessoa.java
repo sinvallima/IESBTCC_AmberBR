@@ -57,6 +57,27 @@ public class Pessoa implements Parcelable {
 
     //Parcelable Implementation
     protected Pessoa(Parcel in) {
+
+        String[] data = new String[5];
+
+        in.readStringArray(data);
+        this.nome = data[0];
+        this.sobrenome = data[1];
+        this.email = data[2];
+        this.telefone = data[3];
+        this.idade = Short.valueOf(data[4]);
+
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] {
+                this.getNome(),
+                this.getSobrenome(),
+                this.getEmail(),
+                this.getTelefone(),
+                String.valueOf(this.getIdade())});
+
     }
 
 
@@ -76,10 +97,6 @@ public class Pessoa implements Parcelable {
         this.idade = idade;
         this.email = email;
         this.telefone = telefone;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
     }
 
     @Override

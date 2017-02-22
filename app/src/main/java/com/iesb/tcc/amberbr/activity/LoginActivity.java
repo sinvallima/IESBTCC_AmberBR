@@ -101,8 +101,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         try {
             amberManager = new MainRules(this);
 
-            amberManager.setUsuario((Usuario) getIntent().getSerializableExtra("usuario"));
             amberManager.setbLogado(getIntent().getBooleanExtra("logado", false));
+            amberManager.setUsuario((Usuario) getIntent().getParcelableExtra("usuario"));
 
         } catch (GenericBusinessException e) {
             e.printStackTrace();
@@ -194,6 +194,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             try {
 
                                 amberManager.getUsuario().setEmail(object.getString("email"));
+                                amberManager.getUsuario().setNome(object.getString("first_name"));
+                                amberManager.getUsuario().setSobrenome(object.getString("last_name"));
+
+                                onBackPressed();
                                 //amberManager.getUsuario().setIdade();
                                 //String birthday = object.getString("birthday"); // 01/31/1980 format
 
@@ -203,10 +207,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         }
                     });
             Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,email,gender,birthday");
+            parameters.putString("fields", "id,first_name,middle_name,last_name,email,gender,birthday");
             request.setParameters(parameters);
             request.executeAsync();
-            onBackPressed();
+            //onBackPressed();
         }
 
     }

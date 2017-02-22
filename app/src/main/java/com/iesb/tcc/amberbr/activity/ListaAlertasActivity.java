@@ -279,7 +279,7 @@ public class ListaAlertasActivity extends AppCompatActivity implements AlertasEn
         switch (requestCode){
             case MainDefaultValues.REQUEST_CODE_LOGIN_ACTIVITY:
 
-                Usuario user = (Usuario) data.getSerializableExtra("usuario");
+                Usuario user = (Usuario) data.getParcelableExtra("usuario");
                 boolean bLogado = (boolean) data.getBooleanExtra("logado", false);
 
                 this.amberManager.setbLogado(bLogado);
