@@ -107,53 +107,57 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } catch (GenericBusinessException e) {
             e.printStackTrace();
         }
-        //FacebookSdk.setApplicationId()
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.activity_login);
-        mProfileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                //amberManager
-                amberManager.setbLogado(currentProfile != null);
 
-                if (amberManager.isbLogado()){
-                    amberManager.getUsuario().setIdFacebook(currentProfile.getId());
-                    amberManager.getUsuario().setNome(currentProfile.getFirstName());
-                    amberManager.getUsuario().setSobrenome(currentProfile.getMiddleName() + " " +
-                            currentProfile.getLastName());
-                }else{
-                    amberManager.setUsuario(new Usuario());
+        if (!amberManager.isbLogado()) {
+
+            //FacebookSdk.setApplicationId()
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            setContentView(R.layout.activity_login);
+            mProfileTracker = new ProfileTracker() {
+                @Override
+                protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                    //amberManager
+                    amberManager.setbLogado(currentProfile != null);
+
+                    if (amberManager.isbLogado()) {
+                        amberManager.getUsuario().setIdFacebook(currentProfile.getId());
+                        amberManager.getUsuario().setNome(currentProfile.getFirstName());
+                        amberManager.getUsuario().setSobrenome(currentProfile.getMiddleName() + " " +
+                                currentProfile.getLastName());
+                    } else {
+                        amberManager.setUsuario(new Usuario());
+                    }
                 }
-            }
-        };
+            };
 
-        callbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-
-
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-            }
-
-            @Override
-            public void onCancel() {
-                Log.v("LoginActivity", "cancel");
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                Log.v("LoginActivity", "Erro: " + exception.getCause().toString());
-            }
-        });
+            callbackManager = CallbackManager.Factory.create();
+            LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+            loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
 
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    // App code
+                }
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+                @Override
+                public void onCancel() {
+                    Log.v("LoginActivity", "cancel");
+                }
+
+                @Override
+                public void onError(FacebookException exception) {
+                    Log.v("LoginActivity", "Erro: " + exception.getCause().toString());
+                }
+            });
+
+            // ATTENTION: This was auto-generated to implement the App Indexing API.
+            // See https://g.co/AppIndexing/AndroidStudio for more information.
+            client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        }else {
+            onBackPressed();
+        }
     }
 
     @Override

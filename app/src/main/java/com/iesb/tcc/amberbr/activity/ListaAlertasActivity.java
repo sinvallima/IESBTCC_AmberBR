@@ -49,7 +49,7 @@ import java.util.List;
 public class ListaAlertasActivity extends AppCompatActivity implements AlertasEncerradosFragment.OnFragmentInteractionListener,
         AlertasRecentesFragment.OnFragmentInteractionListener {
 
-    private MainRules amberManager;
+    private static MainRules amberManager;
 
     /**
      * The {@link PagerAdapter} that will provide
@@ -167,13 +167,24 @@ public class ListaAlertasActivity extends AppCompatActivity implements AlertasEn
             }
         });
 
-
+        //Botão Novo Alerta
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+/*
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+*/
+                Intent intentNovoAlerta = new Intent(getBaseContext(), NovoAlertaActivity.class);
+                //intentListaJogador.putExtras("lista", this.getIntent());
+                intentNovoAlerta.putExtra("logado", amberManager.isbLogado());
+                intentNovoAlerta.putExtra("usuario", amberManager.getUsuario());
+
+                startActivityForResult(intentNovoAlerta, MainDefaultValues.REQUEST_CODE_NOVO_ALERTA_ACTIVITY);
+
+
+
             }
         });
 
@@ -279,12 +290,29 @@ public class ListaAlertasActivity extends AppCompatActivity implements AlertasEn
         switch (requestCode){
             case MainDefaultValues.REQUEST_CODE_LOGIN_ACTIVITY:
 
-                Usuario user = (Usuario) data.getParcelableExtra("usuario");
-                boolean bLogado = (boolean) data.getBooleanExtra("logado", false);
+                amberManager.setbLogado(data.getBooleanExtra("logado", false));
+                amberManager.setUsuario((Usuario) data.getParcelableExtra("usuario"));
+                break;
 
-                this.amberManager.setbLogado(bLogado);
-                this.amberManager.setUsuario(user);
+            case MainDefaultValues.REQUEST_CODE_NOVO_ALERTA_ACTIVITY:
 
+                break;
+
+            case MainDefaultValues.REQUEST_CODE_EDITAR_ALERTA_ACTIVITY:
+
+                break;
+
+            case MainDefaultValues.REQUEST_CODE_NOVO_AVISTAMENTO_ACTIVITY:
+
+                break;
+
+            case MainDefaultValues.REQUEST_CODE_CONFIGURACAO_ACTIVITY:
+
+                break;
+
+            case MainDefaultValues.REQUEST_CODE_LISTA_ALERTA_ACTIVITY:
+                //Deve ser um erro.
+                break;
 
         }
 

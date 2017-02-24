@@ -16,6 +16,12 @@ public class MainDefaultValues {
     //Navegação entre Activities
     public static final int REQUEST_CODE_LISTA_ALERTA_ACTIVITY = 200;
     public static final int REQUEST_CODE_LOGIN_ACTIVITY = 201;
+    public static final int REQUEST_CODE_NOVO_ALERTA_ACTIVITY = 202;
+    public static final int REQUEST_CODE_NOVO_AVISTAMENTO_ACTIVITY = 203;
+    public static final int REQUEST_CODE_EDITAR_ALERTA_ACTIVITY = 204;
+    public static final int REQUEST_CODE_CONFIGURACAO_ACTIVITY = 205;
 
+
+    //...
 
 }

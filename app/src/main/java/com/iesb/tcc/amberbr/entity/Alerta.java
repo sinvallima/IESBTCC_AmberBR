@@ -115,6 +115,28 @@ public class Alerta implements Parcelable {
 
     //Parcelable Implementation
     protected Alerta(Parcel in) {
+        String[] data = new String[11];
+
+        in.readStringArray(data);
+        this.setId(Double.valueOf(data[0]));
+        //this.setTipoAlerta(TipoAlerta Double.valueOf(data[1]));
+        //this.setStatus(TipoStatusAlerta (Double.valueOf(data[2])));
+        //this.setEmissor();
+
+/*
+        private double id;
+        private TipoAlerta tipoAlerta;
+        private TipoStatusAlerta status;
+        private Usuario emissor;
+        private Localizacao localizacao;
+        private Date dataHoraAbertura;
+        private Pessoa desaparecido;
+        private Date ultimaAtualizacao;
+        private Boolean encontrado;
+        private TipoDesaparecimento tipoDesaparecimento;
+        private List<Foto> fotos;
+*/
+
     }
 
     public Alerta(){
@@ -151,4 +173,9 @@ public class Alerta implements Parcelable {
         }
     };
 
+    @Override
+    public boolean equals(Object obj) {
+        Alerta alerta = (Alerta)obj;
+        return (alerta.getId() == this.getId());
+    }
 }

@@ -39,6 +39,14 @@ public class Localizacao implements Parcelable {
 
     //Parcelable Implementation
     protected Localizacao(Parcel in) {
+
+        String[] data = new String[3];
+
+        in.readStringArray(data);
+        this.setLatitude(Double.valueOf(data[0]));
+        this.setLongitude(Double.valueOf(data[1]));
+        this.setNome(data[2]);
+
     }
 
     public Localizacao(){
@@ -46,7 +54,19 @@ public class Localizacao implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        Localizacao loc = (Localizacao)obj;
+
+        return (loc.getLatitude() == this.getLatitude() && loc.getLongitude() == this.getLongitude());
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] {
+                String.valueOf(this.getLatitude()),
+                String.valueOf(this.getLongitude()),
+                this.getNome()});
+
     }
 
     @Override
